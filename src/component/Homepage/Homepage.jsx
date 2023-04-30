@@ -43,12 +43,12 @@ function Homepage({ getId }) {
           getId={getId}
           filmData={newFilm}
         />
-        <TitleMovie
+        {/* <TitleMovie
           title="PHIM BỘ"
           type={"tv"}
           getId={getId}
           filmData={newTV}
-        />
+        /> */}
       </div>
     </div>
   );

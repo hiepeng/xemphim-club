@@ -4,27 +4,27 @@ import { db } from "../../config/firebase";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
 
 export default function Admin() {
-  const [step, setStep] = useState(2);
-  const [statusManage, setStatusManage] = useState(1);
+  const [step, setStep] = useState(1);
+  const [statusManage, setStatusManage] = useState(3);
   const [users, setUsers] = useState(null);
   const checkPass = (event) => {
     const password = event.target.previousSibling.value; // Lấy giá trị từ ô nhập liệu
     if (password === "9999") {
       setStep(2); // Nếu mật khẩu đúng, cập nhật giá trị của biến step
+    } else {
+      alert("Sai mật khẩu")
     }
   };
 
   const getUsers = async () => {
     const getuser = [];
     const querySnapshot = await getDocs(collection(db, "users"));
-    console.log(querySnapshot,"querySnapshot")
     querySnapshot.docs.forEach((item) => {
         const row = item.data()
         row.id = item.id
         getuser.push(row)
     });
     setUsers(getuser);
-    console.log(users, "usersusersusersusersusers");
   };
 
   const handleDelete = async (user) => {

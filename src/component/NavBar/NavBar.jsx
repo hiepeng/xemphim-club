@@ -62,14 +62,14 @@ function NavBar({ userInfo, isLogin }) {
           </li>
           <li key="movie">
             <NavLink activeClassName="selected" to="/type/movie">
-              Phim lẻ
+              Xem phim
             </NavLink>
           </li>
-          <li key="TV">
+          {/* <li key="TV">
             <NavLink activeClassName="selected" to="/type/tv">
               Phim bộ
             </NavLink>
-          </li>
+          </li> */}
           <li key="FAQ">
             <NavLink activeClassName="selected" to="/FAQ">
               FAQ
