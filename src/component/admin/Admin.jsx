@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { db } from "../../config/firebase";
 import { collection, doc, getDocs, updateDoc } from "firebase/firestore";
+import MovieManage from "./MovieManage";
+import DanhMuc from "./DanhMuc";
 
 export default function Admin() {
-  const [step, setStep] = useState(1);
-  const [statusManage, setStatusManage] = useState(3);
+  const [step, setStep] = useState(2);
+  const [statusManage, setStatusManage] = useState(1);
   const [users, setUsers] = useState(null);
   const checkPass = (event) => {
     const password = event.target.previousSibling.value; // Lấy giá trị từ ô nhập liệu
@@ -46,7 +48,7 @@ export default function Admin() {
   return (
     <div className="admin">
       {step === 1 ? (
-        <div className="password">
+        <div className="password" style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <input placeholder="enter password" />
           <button type="button" onClick={checkPass}>
             submit
@@ -59,28 +61,29 @@ export default function Admin() {
               className={`menu-item ${statusManage === 3 && "active"}`}
               onClick={() => setStatusManage(3)}
             >
-              User
+              Tài khoản
             </div>
             <div
+
               className={`menu-item ${statusManage === 1 && "active"}`}
               onClick={() => setStatusManage(1)}
             >
-              Thể loại phim
+              Danh sách phim
             </div>
             <div
               className={`menu-item ${statusManage === 2 && "active"}`}
               onClick={() => setStatusManage(2)}
             >
-              Danh sách phim
+              Danh mục
             </div>
           </div>
-          <div>
+          <div style={{width: 'calc(100% - 200px)'}}>
             {statusManage === 1 ? (
-              <div>a</div>
+              <div><MovieManage /></div>
             ) : statusManage === 2 ? (
-              <div>b</div>
+              <div><DanhMuc /></div>
             ) : (
-              <div>
+              <div style={{margin: "20px"}}>
                 <div className="user-list user-table">
                   <div className="user-list-header table-header">
                     <div>Email</div>

@@ -225,3 +225,17 @@
     }
   }
 }
+
+.dropdown-setting {
+  display: none;
+}
+
+.dropdown-setting:hover {
+  display: block;
+  color: black;
+}
+
+.btn-setting:hover + .dropdown-setting {
+  display: block;
+  color: black;
+}

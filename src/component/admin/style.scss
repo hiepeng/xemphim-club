@@ -9,10 +9,12 @@
 
   .menu {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     background-color: #f2f2f2;
     padding: 10px;
     border-radius: 10px;
+    width: 200px;
+    gap: 15px;
 
     .menu-item {
       margin: 0 10px;
@@ -21,7 +23,6 @@
       padding: 5px;
       border-radius: 5px;
       cursor: pointer;
-
       &:hover {
         color: #fff;
         background-color: #333;
@@ -33,6 +34,8 @@
     }
   }
   .step-two {
+    display: flex;
+    height: 100%;
     .user-table {
       display: flex;
       flex-direction: column;
@@ -102,6 +105,157 @@
           cursor: pointer;
         }
       }
+    }
+  }
+}
+
+.movie-manage {
+  border: 1px solid #ccc;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    margin-bottom: 8px;
+    height: 40px;
+    &-cell {
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  &-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    height: 40px;
+    .movie-manage-cell {
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  &-edit-button {
+    background-color: #428bca;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-right: 4px;
+    cursor: pointer;
+  }
+
+  &-save-button {
+    background-color: #5cb85c;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-right: 4px;
+    cursor: pointer;
+  }
+
+  &-cancel-button {
+    background-color: #d9534f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+
+  &-add-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+
+  &-add-button {
+    background-color: #428bca;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+}
+
+
+.danh-muc {
+  display: flex;
+  gap: 10px;
+  margin-left: 10px;
+  .title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .namSanXuat {
+    height: 500px;
+    overflow-y: auto;
+  }
+
+  .table {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem 0;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      div {
+        flex: 1;
+      }
+
+      .action-buttons {
+        display: flex;
+
+        button {
+          margin-left: 1rem;
+          background-color: #0077ff;
+          color: #fff;
+          border: none;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          cursor: pointer;
+          transition: all 0.2s ease-in-out;
+
+          &:hover {
+            background-color: #005eff;
+          }
+        }
+      }
+    }
+  }
+
+  button {
+    margin-top: 1rem;
+    background-color: #0077ff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #005eff;
     }
   }
 }

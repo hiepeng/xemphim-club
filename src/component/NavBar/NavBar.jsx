@@ -5,7 +5,11 @@ import "./NavBar.scss";
 import logo from "../../images/logo-full.png";
 import { NavLink } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
+
+import { useHistory } from "react-router-dom";
+
 function NavBar({ userInfo, isLogin }) {
+  let history = useHistory();
   const [sidebar, setSideBar] = useState("");
   const [localUser, setLocalUser] = useState({});
   const accessToken = localStorage.getItem("access_token");
@@ -22,7 +26,7 @@ function NavBar({ userInfo, isLogin }) {
       .catch((error) => {
         // error.response.status Check status code
         // alert(" fail to fetch!");
-        console.log(error, "error")
+        console.log(error, "error");
       })
       .finally(() => {
         //Perform action in always
@@ -74,6 +78,26 @@ function NavBar({ userInfo, isLogin }) {
             <NavLink activeClassName="selected" to="/FAQ">
               FAQ
             </NavLink>
+          </li>
+          <li style={{display: 'flex', alignItems: "center", paddingBottom: '4px', marginLeft: '8px'}}>
+            <div>
+              <div style={{ display: "inline-block", position: "relative" }}>
+                <span className="btn-setting" style={{ cursor: "pointer" }}>Setting</span>
+                <div
+                className="dropdown-setting"
+                  style={{
+                    position: "absolute",
+                    top: "20px",
+                    left: "0",
+                    backgroundColor: "#f9f9f9",
+                    boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <div onClick={() => history.push('/admin')} style={{ padding: "12px 16px" }}>Admin</div>
+                  <div style={{ padding: "12px 16px" }}>Logout</div>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
         <div className="colection">
