@@ -1,3 +1,51 @@
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.1);
+  position: fixed;
+  left: 0;
+  top: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .container-modal {
+    background: white;
+    height: 700px;
+    width: 700px;
+    .submit {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 30px;
+      button {
+        width: 100px;
+        height: 30px;
+        cursor: pointer;
+      }
+    }
+    .big-title {
+      font-weight: 600;
+      font-size: 18px;
+      text-align: center;
+      margin: 20px 0;
+    }
+    .row-input {
+      display: flex;
+      align-items: center;
+      .title {
+        margin: 0;
+        width: 150px;
+        padding: 10px 15px;
+        border: none;
+      }
+      .input {
+        height: 30px;
+        width: calc(100% - 200px);
+        outline: none;
+      }
+    }
+  }
+}
 .admin {
   margin-top: 50px;
   background: white;
@@ -184,7 +232,6 @@
   }
 }
 
-
 .danh-muc {
   display: flex;
   gap: 10px;
@@ -207,6 +254,7 @@
     border: 1px solid #ccc;
     padding: 1rem;
     border-radius: 0.5rem;
+    width: 250px;
 
     .row {
       display: flex;
@@ -227,7 +275,6 @@
         display: flex;
 
         button {
-          margin-left: 1rem;
           background-color: #0077ff;
           color: #fff;
           border: none;
@@ -245,7 +292,6 @@
   }
 
   button {
-    margin-top: 1rem;
     background-color: #0077ff;
     color: #fff;
     border: none;
@@ -258,4 +304,11 @@
       background-color: #005eff;
     }
   }
+}
+
+.addnamsx {
+  height: 40px;
+  margin-top: 10px;
+  width: 120px;
+  margin-right: 10px;
 }

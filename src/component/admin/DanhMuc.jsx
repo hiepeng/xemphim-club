@@ -1,29 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
+import { db } from "../../config/firebase";
+import { addDoc, collection, getDocs, deleteField, doc, updateDoc, deleteDoc  } from "firebase/firestore";
 
 export default function DanhMuc() {
-  const [namSanXuat, setNamSanXuat] = useState(
-    [...Array(34)].map((_, i) => 1990 + i)
-  ); // tạo một mảng các năm từ 1990 đến 2023
-  const [theLoai, setTheLoai] = useState([
-    "Hành động",
-    "Phim hài",
-    "Phim Việt",
-  ]); // tạo một mảng các thể loại
-  const [quocGia, setQuocGia] = useState([
-    "Việt Nam",
-    "Trung Quốc",
-    "Hàn Quốc",
-  ]); // tạo một mảng các quốc gia
+  const [addNamSx, setAddNamSx] = useState()
+  const [namSanXuat, setNamSanXuat] = useState();
+  const [theLoai, setTheLoai] = useState();
+  const [quocGia, setQuocGia] = useState(); // tạo một mảng các quốc gia
 
-  const handleAddNamSanXuat = () => {
-    const lastYear = namSanXuat[namSanXuat.length - 1];
-    setNamSanXuat([...namSanXuat, lastYear + 1]);
+  const handleAddNamSanXuat = async() => {
+    await addDoc(collection(db, "namsx"), {
+      nam: addNamSx,
+    });
+    getData()
+    setAddNamSx('')
   };
 
-  const handleDeleteNamSanXuat = (year) => {
-    const updatedYears = namSanXuat.filter((y) => y !== year);
-    setNamSanXuat(updatedYears);
+  const handleDeleteNamSanXuat = async(year) => {
+    console.log(year, "year")
+    await deleteDoc(doc(db, "namsx", year.id));
+    getData()
   };
 
   const handleEditNamSanXuat = (year, newYear) => {
@@ -31,50 +28,93 @@ export default function DanhMuc() {
     setNamSanXuat(updatedYears);
   };
 
-  const handleAddTheLoai = () => {
-    setTheLoai([...theLoai, ""]);
+  const handleAddTheLoai = async() => {
+    const name = prompt('Nhập tên thể loại')
+    await addDoc(collection(db, "theloai"), {
+      theloai: name,
+    });
+    getTheloai()
   };
 
-  const handleDeleteTheLoai = (index) => {
-    const updatedGenres = theLoai.filter((_, i) => i !== index);
-    setTheLoai(updatedGenres);
+  const handleDeleteTheLoai = async(t) => {
+    await deleteDoc(doc(db, "theloai", t.id));
+    getTheloai()
   };
 
-  const handleEditTheLoai = (index, newValue) => {
-    const updatedGenres = theLoai.map((value, i) =>
-      i === index ? newValue : value
-    );
-    setTheLoai(updatedGenres);
+  const handleEditTheLoai = async(value) => {
+    const name = prompt('Nhập tên thể loại')
+    const userRef = doc(db, "theloai", value.id);
+    await updateDoc(userRef, { theloai: name });
+    getTheloai()
   };
 
-  const handleAddQuocGia = () => {
-    setQuocGia([...quocGia, ""]);
+  const handleAddQuocGia = async() => {
+    const name = prompt('Nhập tên quoc gia')
+    await addDoc(collection(db, "quocgia"), {
+      quocgia: name,
+    });
+    getQuocGia()
   };
 
-  const handleDeleteQuocGia = (index) => {
-    const updatedCountries = quocGia.filter((_, i) => i !== index);
-    setQuocGia(updatedCountries);
+  const getQuocGia = async() => {
+    const all = [];
+    const querySnapshot = await getDocs(collection(db, "quocgia"));
+    querySnapshot.docs.forEach((item) => {
+      const row = item.data();
+      row.id = item.id;
+      all.push(row);
+    });
+    setQuocGia(all);
+  }
+  const handleDeleteQuocGia = async(q) => {
+    await deleteDoc(doc(db, "quocgia", q.id));
+    getQuocGia()
   };
 
-  const handleEditQuocGia = (index, newValue) => {
-    const updatedCountries = quocGia.map((value, i) =>
-      i === index ? newValue : value
-    );
-    setQuocGia(updatedCountries);
+  const handleEditQuocGia = async(newValue) => {
+    const name = prompt('Nhập tên quốc gia')
+    const userRef = doc(db, "quocgia", newValue.id);
+    await updateDoc(userRef, { quocgia: name });
+    getQuocGia()
   };
+
+  const getTheloai = async () => {
+    const all = [];
+    const querySnapshot = await getDocs(collection(db, "theloai"));
+    querySnapshot.docs.forEach((item) => {
+      const row = item.data();
+      row.id = item.id;
+      all.push(row);
+    });
+    setTheLoai(all);
+  }
+
+  const getData = async () => {
+    const all = [];
+    const querySnapshot = await getDocs(collection(db, "namsx"));
+    querySnapshot.docs.forEach((item) => {
+      const row = item.data();
+      row.id = item.id;
+      all.push(row);
+    });
+    setNamSanXuat(all);
+  };
+
+  useEffect(() => {
+    getData();
+    getTheloai()
+    getQuocGia()
+  }, []);
 
   return (
     <div className="danh-muc">
       <div className="nam-san-xuat">
         <div className="title">Năm sản xuất</div>
         <div className="table namSanXuat">
-          {namSanXuat.map((year) => (
-            <div key={year} className="row">
-              <div>{year}</div>
+          {namSanXuat && namSanXuat.map((year) => (
+            <div key={year.id} className="row">
+              <div>{year.nam}</div>
               <div className="action-buttons">
-                <button onClick={() => handleEditNamSanXuat(year, year + 1)}>
-                  Sửa
-                </button>
                 <button onClick={() => handleDeleteNamSanXuat(year)}>
                   Xóa
                 </button>
@@ -82,21 +122,21 @@ export default function DanhMuc() {
             </div>
           ))}
         </div>
-        <button onClick={handleAddNamSanXuat}>Thêm năm sản xuất</button>
+        <input value={addNamSx} onChange={(e) => {console.log(setAddNamSx(e.target.value))}} className="addnamsx" placeholder="Nhập năm sản xuất cần thêm" /><button onClick={handleAddNamSanXuat}>Thêm</button>
       </div>
       <div className="the-loai">
         <div className="title">Thể loại</div>
         <div className="table">
-          {theLoai.map((genre, index) => (
-            <div key={index} className="row">
-              <div>{genre}</div>
+          {theLoai && theLoai.map((genre) => (
+            <div key={genre.id} className="row">
+              <div>{genre.theloai}</div>
               <div className="action-buttons">
                 <button
-                  onClick={() => handleEditTheLoai(index, genre + " mới")}
+                  onClick={() => handleEditTheLoai(genre)}
                 >
                   Sửa
                 </button>
-                <button onClick={() => handleDeleteTheLoai(index)}>Xóa</button>
+                <button onClick={() => handleDeleteTheLoai(genre)}>Xóa</button>
               </div>
             </div>
           ))}
@@ -106,16 +146,16 @@ export default function DanhMuc() {
       <div className="quoc-gia">
         <div className="title">Quốc gia</div>
         <div className="table">
-          {quocGia.map((country, index) => (
-            <div key={index} className="row">
-              <div>{country}</div>
+          {quocGia && quocGia.map((country) => (
+            <div key={country.id} className="row">
+              <div>{country.quocgia}</div>
               <div className="action-buttons">
                 <button
-                  onClick={() => handleEditQuocGia(index, country + " mới")}
+                  onClick={() => handleEditQuocGia(country)}
                 >
                   Sửa
                 </button>
-                <button onClick={() => handleDeleteQuocGia(index)}>Xóa</button>
+                <button onClick={() => handleDeleteQuocGia(country)}>Xóa</button>
               </div>
             </div>
           ))}

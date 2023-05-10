@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
+import Modal from "./Modal";
 
 export default function MovieManage() {
   const [movies, setMovies] = useState([
@@ -28,10 +29,11 @@ export default function MovieManage() {
   const [editingMovie, setEditingMovie] = useState(null);
 
   const handleAddMovie = () => {
-    setMovies([
-      ...movies,
-      { name: "1", link: "2", year: "3", genre: "4", country: "5" },
-    ]);
+    // const name = prompt('Nhập tên quoc gia')
+    // await addDoc(collection(db, "quocgia"), {
+    //   quocgia: name,
+    // });
+    // getQuocGia()
   };
 
   const handleEditMovie = (index) => {
@@ -57,6 +59,7 @@ export default function MovieManage() {
 
   return (
     <div className="movie-manage">
+      <Modal />
       <div className="movie-manage-header">
         <div className="movie-manage-header-cell">Tên phim</div>
         <div className="movie-manage-header-cell">Link phim</div>
