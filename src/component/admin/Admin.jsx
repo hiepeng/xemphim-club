@@ -6,7 +6,7 @@ import MovieManage from "./MovieManage";
 import DanhMuc from "./DanhMuc";
 
 export default function Admin() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [statusManage, setStatusManage] = useState(1);
   const [users, setUsers] = useState(null);
   const checkPass = (event) => {
@@ -79,7 +79,7 @@ export default function Admin() {
           </div>
           <div style={{width: 'calc(100% - 200px)'}}>
             {statusManage === 1 ? (
-              <div><MovieManage /></div>
+              <div style={{height: 'calc(100% - 20px)'}}><MovieManage /></div>
             ) : statusManage === 2 ? (
               <div><DanhMuc /></div>
             ) : (

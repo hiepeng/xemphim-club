@@ -74,17 +74,31 @@ function NavBar({ userInfo, isLogin }) {
               Phim bộ
             </NavLink>
           </li> */}
+          <li key="version">
+            <NavLink activeClassName="selected" to="/new-version">
+              Change version
+            </NavLink>
+          </li>
           <li key="FAQ">
             <NavLink activeClassName="selected" to="/FAQ">
               FAQ
             </NavLink>
           </li>
-          <li style={{display: 'flex', alignItems: "center", paddingBottom: '4px', marginLeft: '8px'}}>
+          <li
+            style={{
+              display: "flex",
+              alignItems: "center",
+              paddingBottom: "4px",
+              marginLeft: "8px",
+            }}
+          >
             <div>
               <div style={{ display: "inline-block", position: "relative" }}>
-                <span className="btn-setting" style={{ cursor: "pointer" }}>Setting</span>
+                <span className="btn-setting" style={{ cursor: "pointer" }}>
+                  Setting
+                </span>
                 <div
-                className="dropdown-setting"
+                  className="dropdown-setting"
                   style={{
                     position: "absolute",
                     top: "20px",
@@ -93,7 +107,12 @@ function NavBar({ userInfo, isLogin }) {
                     boxShadow: "0 8px 16px 0 rgba(0,0,0,0.2)",
                   }}
                 >
-                  <div onClick={() => history.push('/admin')} style={{ padding: "12px 16px" }}>Admin</div>
+                  <div
+                    onClick={() => history.push("/admin")}
+                    style={{ padding: "12px 16px" }}
+                  >
+                    Admin
+                  </div>
                   <div style={{ padding: "12px 16px" }}>Logout</div>
                 </div>
               </div>

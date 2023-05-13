@@ -7,6 +7,7 @@ import FAQpage from "./component/FAQpage/FAQpage";
 import Footer from "./component/Footer/Footer";
 import Homepage from "./component/Homepage/Homepage";
 import MoviePage from "./component/MoviePage/MoviePage";
+import MoviePage2 from "./component/MoviePage/MoviePage2";
 import NavBar from "./component/NavBar/NavBar";
 import SearchPage from "./component/SearchPage/SearchPage";
 import TVPage from "./component/TVPage/TVPage";
@@ -14,6 +15,7 @@ import WatchPage from "./component/WatchPage/WatchPage";
 import Loginpage from "./component/LoginPage/Loginpage";
 import Signup from "./component/Signup/Signup";
 import Admin from "./component/admin/Admin";
+import useDarkMode from 'react-use-dark-mode';
 
 import {
   collection,
@@ -25,6 +27,7 @@ import {
   query,
 } from "firebase/firestore";
 import { db } from "./config/firebase";
+import WatchPage2 from "./component/WatchPage/WatchPage2";
 
 function App() {
   const [MovieID, setMovieID] = useState();
@@ -76,7 +79,9 @@ function App() {
     }
     setUserInfo(profile);
   };
+
   return (
+    
     <Router>
       <div className="App">
         <NavBar userInfo={userInfo} isLogin={isLogin} />
@@ -89,6 +94,9 @@ function App() {
           </Route>
           <Route path="/type/movie">
             <MoviePage getId={getId} />
+          </Route>
+          <Route path="/new-version">
+            <MoviePage2 getId={getId} />
           </Route>
           <Route path="/type/tv">
             <TVPage getId={getId} />
@@ -118,6 +126,9 @@ function App() {
           </Route>
           <Route exact path={`/watch/${MovieType}/${MovieID}`}>
             <WatchPage type={MovieType} id={MovieID} />
+          </Route>
+          <Route exact path={`/watchmovie/:id`}>
+            <WatchPage2 />
           </Route>
           <Route path="/">
             <Homepage getId={getId} />
