@@ -8,7 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useHistory } from "react-router-dom";
 
-function NavBar({ userInfo, isLogin }) {
+function NavBar({ userInfo, isLogin, light, setLight }) {
   let history = useHistory();
   const [sidebar, setSideBar] = useState("");
   const [localUser, setLocalUser] = useState({});
@@ -34,7 +34,7 @@ function NavBar({ userInfo, isLogin }) {
   }, [userInfo]);
   return (
     <>
-      <div className="nav-bar">
+      <div className="nav-bar" style={light ? {visibility: "hidden"} : {}}>
         <div className="logo-wraper">
           <button
             onClick={() => {
@@ -120,7 +120,7 @@ function NavBar({ userInfo, isLogin }) {
           </li>
         </ul>
         <div className="colection">
-          {!Object.keys(userInfo).includes("name") || isLogin ? (
+          {!Object.keys(userInfo).includes("email") || isLogin ? (
             <p className="login">
               <NavLink to="/login">Đăng nhập</NavLink>
             </p>
@@ -128,7 +128,7 @@ function NavBar({ userInfo, isLogin }) {
             <>
               <p className="user">
                 <img src={userInfo.imageUrl} alt="" />
-                {userInfo.name}
+                {userInfo.email}
                 <div className="user__expand">
                   <a href="#">Cá nhân</a>
                   <NavLink to="/colection">Bộ sưu tập</NavLink>

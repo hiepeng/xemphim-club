@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import "./LoginPage.scss";
 import Login from "./Login";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../config/firebase";
 function Loginpage({ userProfile }) {
   const initialState = {
     email: "",
@@ -18,24 +20,22 @@ function Loginpage({ userProfile }) {
   const redirectHome = () => {
     history.push(`/`);
   };
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     e.preventDefault();
-    // userProfile(formData);
-    axios
-      .post("http://localhost:8000/auth/login", formData)
-      .then((res) => {
-        //Perform Success Action
-        alert("Đăng nhập thành công!");
-        console.log(res);
-        redirectHome();
-      })
-      .catch((error) => {
-        // error.response.status Check status code
-        alert(error.response.data.message);
-      })
-      .finally(() => {
-        //Perform action in always
-      });
+    userProfile(formData);
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", formData.email),
+      where("pass", "==", formData.password),
+    );
+
+    
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.docs.length) {
+      history.push(`/`);
+    } else {
+      alert("Tài khoản hoặc mật khẩu không chính xác")
+    }
   };
   const { email, password } = formData;
   return (
@@ -44,7 +44,7 @@ function Loginpage({ userProfile }) {
         <div className="form__container">
           <h2>Đăng nhập</h2>
           <form onSubmit={onSubmit}>
-            {/* <div id="email" className="form__group">
+            <div id="email" className="form__group">
               <input
                 onChange={onChange}
                 name="email"
@@ -69,12 +69,12 @@ function Loginpage({ userProfile }) {
               </label>
             </div>
             <button className="login__btn">Đăng nhập</button>
-            <div className="divider"></div> */}
+            <div className="divider"></div>
             <Login userProfile={userProfile} />
           </form>
-          {/* <NavLink className="helper-text" to="/signup">
+          <NavLink className="helper-text" to="/signup">
             Đăng ký
-          </NavLink> */}
+          </NavLink>
         </div>
       </div>
     </div>

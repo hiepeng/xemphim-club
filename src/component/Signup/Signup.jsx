@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import "./Signup.scss";
 import Login from "./Login";
 import { NavLink } from "react-router-dom";
+import { db } from "../../config/firebase";
+import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
 function Loginpage({ userProfile }) {
   const initialState = {
     email: "",
@@ -19,24 +21,33 @@ function Loginpage({ userProfile }) {
   const redirectHome = () => {
     history.push(`/`);
   };
-  const onSubmit = (e) => {
+  const onSubmit = async(e) => {
     e.preventDefault();
-    // userProfile(formData);
-    axios
-      .post("http://localhost:8000/auth/register", formData)
-      .then((res) => {
-        //Perform Success Action
-        console.log(res);
-        localStorage.setItem("access_token", res.data.access_token);
-
-        redirectHome();
-      })
-      .catch((error) => {
-        alert(error.response.data.message);
-      })
-      .finally(() => {
-        //Perform action in always
+    console.log(formData)
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", formData.email)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.docs.forEach(item => console.log(item.data(), "111111"))
+    if (!querySnapshot.docs.length) {
+      await addDoc(collection(db, "users"), {
+        email: formData.email,
+        name: formData.name,
+        pass: formData.password,
+        timeRegister: new Date(),
       });
+      alert("Tài khoản của bạn đã đăng kí thành công")
+      history.push(`/login`);
+    } else {
+      console.log(querySnapshot.docs, "querySnapshot.docsquerySnapshot.docs")
+      if(querySnapshot.docs[0].data().block) {
+        alert("Tài khoản của bạn đã bị khóa")
+        return
+      } else {
+        alert("Tài khoản đã tồn tại")
+      }
+    }
   };
   const { email, password, name } = formData;
   return (

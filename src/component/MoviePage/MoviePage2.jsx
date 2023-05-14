@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import FilterMovie from "../FilterMovie/FilterMovie";
 import Pagination from "../Pagination/Pagination";
 import Poster from "../Poster/Poster";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { useHistory } from "react-router-dom";
 
 import { db } from "../../config/firebase";
@@ -11,18 +11,34 @@ function MoviePage({ getId }) {
   const [theLoai, setTheLoai] = useState([]);
   const [quocGia, setQuocGia] = useState([]);
 
-  const [selectedOption, setSelectedOption] = useState("");
-  const [selectedOption2, setSelectedOption2] = useState("");
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption2, setSelectedOption2] = useState(null);
 
-  const [selectedOption3, setSelectedOption3] = useState("");
+  const [selectedOption3, setSelectedOption3] = useState(null);
 
   const [renderfilm, setRenderFilm] = useState([]);
+  const [search, setSearch] = useState(null)
+
+  useEffect(() => {
+    getPhim();
+  }, [selectedOption, selectedOption2, selectedOption3, search]);
 
   const [movies, setMovies] = useState([]);
   let history = useHistory();
   const getPhim = async () => {
-    const all = [];
+    let all = [];
+
     const querySnapshot = await getDocs(collection(db, "phim"));
+
+    // const q = query(
+    //   collection(db, "phim"),
+    //   where("nam", selectedOption ? "==" : "!=", selectedOption),
+    //   where("theloai", selectedOption2 ? "==" : "!=", selectedOption2),
+    //   where("quocgia", selectedOption3 ? "==" : "!=", selectedOption3)
+    // );
+
+    // const querySnapshot = await getDocs(q);
+
     querySnapshot.docs.forEach((item) => {
       const row = item.data();
       row.id = item.id;
@@ -34,6 +50,21 @@ function MoviePage({ getId }) {
         a.createdAt.nanoseconds - b.createdAt.nanoseconds
     );
     all.reverse();
+    if(selectedOption){
+      all = all.filter(item => item.nam === selectedOption )
+    }
+    if(selectedOption2){
+      all = all.filter(item => item.theloai === selectedOption2 )
+    }
+    if(selectedOption3){
+      all = all.filter(item => item.quocgia === selectedOption3 )
+    }
+
+    if(search) {
+      all = all.filter(item => item.name.includes(search))
+    }
+
+    console.log(all)
     setMovies(all);
   };
 
@@ -54,6 +85,9 @@ function MoviePage({ getId }) {
   const handleChange3 = (event) => {
     setSelectedOption3(event.target.value);
   };
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+  }
 
   const getQuocGia = async () => {
     const all = [];
@@ -100,6 +134,7 @@ function MoviePage({ getId }) {
             outline: "none",
             paddingLeft: "10px",
           }}
+          onChange={handleSearch}
           placeholder="Tìm kiếm tên phim..."
         />
         <div>
@@ -149,10 +184,7 @@ function MoviePage({ getId }) {
                       className="poster-item"
                     >
                       <div className="poster-img">
-                        <img
-                          src={film.image}
-                          alt=""
-                        />
+                        <img src={film.image} alt="" />
                       </div>
                       <h3 className="poster-name">{film.name}</h3>
                     </li>

@@ -43,6 +43,23 @@ function Login({ userProfile }) {
         style={{ marginTop: "100px" }}
         isSignedIn={true}
       />
+      {/* <div style={{ marginTop: "50px" }}>
+        <button
+          type="button"
+          style={{
+            width: "100%",
+            height: "50px",
+            color: "white",
+            fontSize: "18px",
+            backgroundColor: "#cf2122",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around",
+          }}
+        >
+          Đăng nhập facebook
+        </button>
+      </div> */}
     </div>
   );
 }

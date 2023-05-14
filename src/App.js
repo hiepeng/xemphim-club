@@ -32,6 +32,7 @@ import WatchPage2 from "./component/WatchPage/WatchPage2";
 function App() {
   const [MovieID, setMovieID] = useState();
   const [MovieType, setMovieType] = useState("");
+  const [light, setLight] = useState(false);
   const [actor, setActor] = useState({
     actorId: "",
     name: "",
@@ -53,13 +54,12 @@ function App() {
     setColection(newColection);
   };
   const userProfile = async (profile) => {
-    // console.log(profile);
+    setUserInfo(profile);
     const q = query(
       collection(db, "users"),
       where("email", "==", profile.email)
     );
     const querySnapshot = await getDocs(q);
-    querySnapshot.docs.forEach(item => console.log(item.data(), "111111"))
     if (!querySnapshot.docs.length) {
       await addDoc(collection(db, "users"), {
         email: profile.email,
@@ -69,7 +69,6 @@ function App() {
         timeRegister: new Date(),
       });
     } else {
-      console.log(querySnapshot.docs, "querySnapshot.docsquerySnapshot.docs")
       if(querySnapshot.docs[0].data().block) {
         alert("Tài khoản của bạn đã bị khóa")
         return
@@ -77,14 +76,13 @@ function App() {
         console.log("No")
       }
     }
-    setUserInfo(profile);
   };
 
   return (
     
     <Router>
       <div className="App">
-        <NavBar userInfo={userInfo} isLogin={isLogin} />
+        <NavBar light={light} setLight={setLight} userInfo={userInfo} isLogin={isLogin} />
         <Switch>
           <Route path="/admin">
             <Admin />
@@ -125,10 +123,10 @@ function App() {
             <CastDetail actor={actor} getId={getId} />
           </Route>
           <Route exact path={`/watch/${MovieType}/${MovieID}`}>
-            <WatchPage type={MovieType} id={MovieID} />
+            <WatchPage type={MovieType} id={MovieID} light={light} setLight={setLight} />
           </Route>
           <Route exact path={`/watchmovie/:id`}>
-            <WatchPage2 />
+            <WatchPage2 light={light} setLight={setLight} />
           </Route>
           <Route path="/">
             <Homepage getId={getId} />
